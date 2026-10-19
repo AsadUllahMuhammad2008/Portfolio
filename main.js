@@ -346,14 +346,10 @@ function initTyped() {
 // Replace with your EmailJS PUBLIC KEY.
 // Never place your private key in frontend code.
 
+
 emailjs.init({
   publicKey: "oAsGqumAW2idTgvm4"
 });
-
-
-// ================================================
-// CONTACT FORM
-// ================================================
 
 const contactForm = document.getElementById("contactForm");
 
@@ -363,69 +359,40 @@ if (contactForm) {
   const formError = document.getElementById("formError");
 
   contactForm.addEventListener("submit", async function (event) {
-
-    // Prevent the page from reloading.
     event.preventDefault();
 
-    // Hide previous status messages.
     formSuccess.style.display = "none";
     formError.style.display = "none";
 
-    // Basic honeypot check.
-    const honeypot = contactForm.querySelector(
-      '[name="website"]'
-    );
-
-    if (honeypot && honeypot.value.trim() !== "") {
-      // Silently reject the suspicious submission.
-      return;
-    }
-
-    // Prevent duplicate clicks.
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending...";
 
     try {
-
-      // Send the message through EmailJS.
       await emailjs.sendForm(
         "service_xdalnsg",
         "template_e4ymbfv",
         contactForm
       );
 
-      // Show success only when EmailJS confirms sending.
       formSuccess.textContent =
         "✅ Message sent successfully! I'll get back to you soon.";
 
       formSuccess.style.display = "block";
-
-      // Clear the fields.
       contactForm.reset();
 
     } catch (error) {
-
       console.error("EmailJS error:", error);
 
       formError.textContent =
-        "❌ Your message could not be sent. Please try again later.";
+        "❌ Message could not be sent. Please try again.";
 
       formError.style.display = "block";
 
     } finally {
-
-      // Restore the button.
       submitBtn.disabled = false;
-
       submitBtn.innerHTML = `
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        <svg width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2">
           <line x1="22" y1="2" x2="11" y2="13"></line>
           <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
         </svg>
@@ -434,3 +401,4 @@ if (contactForm) {
     }
   });
 }
+
