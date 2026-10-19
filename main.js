@@ -389,8 +389,8 @@ if (contactForm) {
 
       // Send the message through EmailJS.
       await emailjs.sendForm(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        "service_xdalnsg",
+        "template_e4ymbfv",
         contactForm
       );
 
