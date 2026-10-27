@@ -338,33 +338,35 @@ function initTyped() {
 }
 
 
-
 // ================================================
 // EMAILJS CONFIGURATION
 // ================================================
-
-// Replace with your EmailJS PUBLIC KEY.
-// Never place your private key in frontend code.
-
+// Initialize with your EmailJS PUBLIC KEY (v4 SDK).
+// Never put your private key in frontend code.
 
 emailjs.init({
-  publicKey: "oAsGqumAW2idTgvm4"
+  publicKey: "p3JZUU6kmlt7i_iZ_"
 });
 
 const contactForm = document.getElementById("contactForm");
 
 if (contactForm) {
-  const submitBtn = document.getElementById("submitBtn");
+  const submitBtn   = document.getElementById("submitBtn");
   const formSuccess = document.getElementById("formSuccess");
-  const formError = document.getElementById("formError");
+  const formError   = document.getElementById("formError");
+
+  // Save the original button content ONCE so we can restore it later
+  const originalBtnHTML = submitBtn.innerHTML;
 
   contactForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    // Reset any previous messages
     formSuccess.style.display = "none";
-    formError.style.display = "none";
+    formError.style.display   = "none";
 
-    submitBtn.disabled = true;
+    // Show loading state
+    submitBtn.disabled    = true;
     submitBtn.textContent = "Sending...";
 
     try {
@@ -374,31 +376,21 @@ if (contactForm) {
         contactForm
       );
 
-      formSuccess.textContent =
-        "✅ Message sent successfully! I'll get back to you soon.";
-
+      // Success
+      formSuccess.textContent   = "✅ Message sent successfully! I'll get back to you soon.";
       formSuccess.style.display = "block";
       contactForm.reset();
 
     } catch (error) {
+      // Error
       console.error("EmailJS error:", error);
-
-      formError.textContent =
-        "❌ Message could not be sent. Please try again.";
-
+      formError.textContent   = "❌ Message could not be sent. Please try again.";
       formError.style.display = "block";
 
     } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
-        Send Message
-      `;
+      // Always restore button state
+      submitBtn.disabled  = false;
+      submitBtn.innerHTML = originalBtnHTML;   // Bring back the SVG + text
     }
   });
 }
-
